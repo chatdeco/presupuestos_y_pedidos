@@ -29,6 +29,9 @@ class ventas_pedidos extends fs_controller
    public $lineas;
    public $resultados;
    public $offset;
+   
+   public $order_by;
+   public $order_type;
 
    public function __construct()
    {
@@ -45,6 +48,20 @@ class ventas_pedidos extends fs_controller
       $this->offset = 0;
       if (isset($_GET['offset']))
          $this->offset = intval($_GET['offset']);
+      
+      if (isset($_GET['order_by']))
+      {
+         $this->order_by = $_GET['order_by'];
+      }
+      else
+      {
+         $this->order_by = NULL;
+      }
+      
+      if (isset($_GET['order_type']))
+         $this->order_type = $_GET['order_type'];
+      else
+         $this->order_type = 'DESC';
 
       if (isset($_POST['buscar_lineas']))
       {
@@ -91,14 +108,14 @@ class ventas_pedidos extends fs_controller
          }
          else if (isset($_GET['pendientes']))
          {
-            $this->resultados = $pedido->all_ptealbaran($this->offset);
+            $this->resultados = $pedido->all_ptealbaran($this->offset, $this->order_by, $this->order_type);
          }
          else if (isset($_GET['rechazados']))
          {
-            $this->resultados = $pedido->all_rechazados($this->offset);
+            $this->resultados = $pedido->all_rechazados($this->offset, $this->order_by, $this->order_type);
          }
          else
-            $this->resultados = $pedido->all($this->offset);
+            $this->resultados = $pedido->all($this->offset, $this->order_by, $this->order_type);
       }
    }
 

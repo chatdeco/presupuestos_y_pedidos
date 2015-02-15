@@ -129,12 +129,85 @@
       <thead>
          <tr>
             <th></th>
-            <th class="text-left">Código + Número 2</th>
-            <th class="text-left">Cliente</th>
+            <th class="text-left">Código + Número 2
+               &nbsp;
+               {if="!isset($_GET['order_by'])"}
+                  <a href='{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=cod&order_type=asc'>
+                     <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+                  </a>
+               {else}
+                  {if="$_GET['order_by']=='cod' AND $_GET['order_type']=='asc'"}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=cod&order_type=desc">
+                        <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+                     </a>
+                  {elseif="$_GET['order_by']=='cod' AND $_GET['order_type']=='desc'"}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=cod&order_type=asc">
+                        <span class="glyphicon glyphicon-sort-by-alphabet"></span>
+                     </a>
+                  {else}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=cod&order_type=desc">
+                        <span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+                     </a>
+                  {/if}
+               {/if}
+            </th>
+            <th class="text-left">Cliente
+               &nbsp;
+               {if="!isset($_GET['order_by'])"}
+                  <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=cli&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+               {else}
+                  {if="$_GET['order_by']=='cli' AND $_GET['order_type']=='asc'"}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=cli&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+                  {elseif="$_GET['order_by']=='cli' AND $_GET['order_type']=='desc'"}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=cli&order_type=asc"><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+                  {else}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=cli&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+                  {/if}
+               {/if}
+            </th>
             <th class="text-left">Observaciones</th>
-            <th class="text-right">Total</th>
-            <th class="text-right">Fecha</th>
-            <th class="text-right">Hora</th>
+            <th class="text-right">Total
+               &nbsp;
+               {if="!isset($_GET['order_by'])"}
+                  <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=total&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+               {else}
+                  {if="$_GET['order_by']=='total' AND $_GET['order_type']=='asc'"}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=total&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+                  {elseif="$_GET['order_by']=='total' AND $_GET['order_type']=='desc'"}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=total&order_type=asc"><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+                  {else}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=total&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+                  {/if}
+               {/if}
+            </th>
+            <th class="text-right">Fecha
+               &nbsp;
+               {if="!isset($_GET['order_by'])"}
+                  <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=fecha&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+               {else}
+                  {if="$_GET['order_by']=='fecha' AND $_GET['order_type']=='asc'"}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=fecha&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+                  {elseif="$_GET['order_by']=='fecha' AND $_GET['order_type']=='desc'"}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=fecha&order_type=asc"><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+                  {else}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=fecha&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+                  {/if}
+               {/if}
+            </th>
+            <th class="text-right">Hora
+               &nbsp;
+               {if="!isset($_GET['order_by'])"}
+                  <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=hora&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+               {else}
+                  {if="$_GET['order_by']=='hora' AND $_GET['order_type']=='asc'"}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=hora&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+                  {elseif="$_GET['order_by']=='hora' AND $_GET['order_type']=='desc'"}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=hora&order_type=asc"><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+                  {else}
+                     <a href="{$fsc->url()}{if="isset($_GET['pendientes'])"}&pendientes=TRUE{elseif="isset($_GET['rechazados'])"}&rechazados=TRUE{/if}&order_by=hora&order_type=desc"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+                  {/if}
+               {/if}
+            </th>
          </tr>
       </thead>
       {loop="$fsc->resultados"}

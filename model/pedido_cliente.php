@@ -30,8 +30,8 @@ require_model('secuencia.php');
 /**
  * Pedido de cliente
  */
-class pedido_cliente extends fs_model {
-
+class pedido_cliente extends fs_model
+{
    public $idpedido;
    public $idalbaran;
    public $codigo;
@@ -79,7 +79,7 @@ class pedido_cliente extends fs_model {
    public function __construct($p = FALSE)
    {
       parent::__construct('pedidoscli', 'plugins/presupuestos_y_pedidos/');
-      if ($p)
+      if($p)
       {
          $this->idpedido = $this->intval($p['idpedido']);
          $this->idalbaran = $this->intval($p['idalbaran']);
@@ -179,7 +179,7 @@ class pedido_cliente extends fs_model {
 
    public function show_hora($s = TRUE)
    {
-      if ($s)
+      if($s)
       {
          return Date('H:i:s', strtotime($this->hora));
       }
@@ -250,7 +250,7 @@ class pedido_cliente extends fs_model {
    public function get($id)
    {
       $pedido = $this->db->select("SELECT * FROM " . $this->table_name . " WHERE idpedido = " . $this->var2str($id) . ";");
-      if ($pedido)
+      if($pedido)
       {
          return new pedido_cliente($pedido[0]);
       }
@@ -297,7 +297,7 @@ class pedido_cliente extends fs_model {
             $sec->save();
          }
       }
-
+      
       $this->codigo = $this->codejercicio . sprintf('%02s', $this->codserie) . sprintf('%06s', $this->numero);
    }
 
@@ -477,11 +477,35 @@ class pedido_cliente extends fs_model {
          return FALSE;
    }
 
-   public function all($offset = 0)
+   public function all($offset = 0, $order_by = NULL, $order_type = 'DESC')
    {
       $pedilist = array();
       
-      $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " ORDER BY fecha DESC, codigo DESC", FS_ITEM_LIMIT, $offset);
+      if ($order_by == 'cli')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " ORDER BY nombrecliente " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'total')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " ORDER BY total " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'fecha')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " ORDER BY fecha " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'finoferta')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " ORDER BY finoferta " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'hora')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " ORDER BY hora " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      else
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " ORDER BY fecha " . $order_type . ", codigo " . $order_type, FS_ITEM_LIMIT, $offset);
+      }      
+
       if ($pedidos)
       {
          foreach ($pedidos as $p)
@@ -491,12 +515,35 @@ class pedido_cliente extends fs_model {
       return $pedilist;
    }
 
-   public function all_ptealbaran($offset = 0, $order = 'DESC')
+   public function all_ptealbaran($offset = 0, $order_by = NULL, $order_type = 'DESC')
    {
       $pedilist = array();
       
-      $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name .
-              " WHERE idalbaran IS NULL AND status=0 ORDER BY fecha " . $order . ", codigo " . $order, FS_ITEM_LIMIT, $offset);
+      if ($order_by == 'cli')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE idalbaran IS NULL AND status=0 ORDER BY nombrecliente " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'total')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE idalbaran IS NULL AND status=0 ORDER BY total " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'fecha')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE idalbaran IS NULL AND status=0 ORDER BY fecha " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'finoferta')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE idalbaran IS NULL AND status=0 ORDER BY finoferta " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'hora')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE idalbaran IS NULL AND status=0 ORDER BY hora " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      else
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE idalbaran IS NULL AND status=0 ORDER BY fecha " . $order_type . ", codigo " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+
       if ($pedidos)
       {
          foreach ($pedidos as $p)
@@ -506,12 +553,35 @@ class pedido_cliente extends fs_model {
       return $pedilist;
    }
 
-   public function all_rechazados($offset = 0, $order = 'DESC')
+   public function all_rechazados($offset = 0, $order_by = NULL, $order_type = 'DESC')
    {
       $preclist = array();
       
-      $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name .
-              " WHERE status=2 ORDER BY fecha " . $order . ", codigo " . $order, FS_ITEM_LIMIT, $offset);
+      if ($order_by == 'cli')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE status=2 ORDER BY nombrecliente " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'total')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE status=2 ORDER BY total " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'fecha')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE status=2 ORDER BY fecha " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'finoferta')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE status=2 ORDER BY finoferta " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      elseif ($order_by == 'hora')
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE status=2 ORDER BY hora " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+      else
+      {
+         $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE status=2 ORDER BY fecha " . $order_type . ", codigo " . $order_type, FS_ITEM_LIMIT, $offset);
+      }
+
       if ($pedidos)
       {
          foreach ($pedidos as $p)
@@ -521,13 +591,11 @@ class pedido_cliente extends fs_model {
       return $preclist;
    }
 
-   public function all_from_cliente($codcliente, $offset = 0)
+   public function all_from_cliente($codcliente, $offset = 0, $order_by = NULL, $order_type = 'DESC')
    {
       $pedilist = array();
       
-      $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name .
-              " WHERE codcliente = " . $this->var2str($codcliente) .
-              " ORDER BY fecha DESC, codigo DESC", FS_ITEM_LIMIT, $offset);
+      $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE codcliente = " . $this->var2str($codcliente) . " ORDER BY fecha " . $order_type . ", codigo " . $order_type, FS_ITEM_LIMIT, $offset);
       if ($pedidos)
       {
          foreach ($pedidos as $p)
@@ -537,12 +605,11 @@ class pedido_cliente extends fs_model {
       return $pedilist;
    }
 
-   public function all_from_agente($codagente, $offset = 0)
+   public function all_from_agente($codagente, $offset = 0, $order_by = NULL, $order_type = 'DESC')
    {
       $pedilist = array();
       
-      $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name .
-              " WHERE codagente = " . $this->var2str($codagente) ." ORDER BY fecha DESC, codigo DESC", FS_ITEM_LIMIT, $offset);
+      $pedidos = $this->db->select_limit("SELECT * FROM " . $this->table_name . " WHERE codagente = " . $this->var2str($codagente) ." ORDER BY fecha " . $order_type . ", codigo " . $order_type, FS_ITEM_LIMIT, $offset);
       if ($pedidos)
       {
          foreach ($pedidos as $p)
@@ -552,12 +619,11 @@ class pedido_cliente extends fs_model {
       return $pedilist;
    }
 
-   public function all_desde($desde, $hasta)
+   public function all_desde($desde, $hasta, $order_by = NULL, $order_type = 'ASC')
    {
       $pedlist = array();
       
-      $pedidos = $this->db->select("SELECT * FROM " . $this->table_name .
-              " WHERE fecha >= " . $this->var2str($desde) . " AND fecha <= " . $this->var2str($hasta) ." ORDER BY codigo ASC;");
+      $pedidos = $this->db->select("SELECT * FROM " . $this->table_name . " WHERE fecha >= " . $this->var2str($desde) . " AND fecha <= " . $this->var2str($hasta) ." ORDER BY codigo " . $order_type . ";");
       if ($pedidos)
       {
          foreach ($pedidos as $p)
@@ -567,7 +633,7 @@ class pedido_cliente extends fs_model {
       return $pedlist;
    }
 
-   public function search($query, $offset = 0)
+   public function search($query, $offset = 0, $order_by = NULL, $order_type = 'DESC')
    {
       $pedilist = array();
       $query = strtolower($this->no_html($query));
@@ -588,7 +654,31 @@ class pedido_cliente extends fs_model {
          $consulta .= "lower(codigo) LIKE '%" . $query . "%' OR lower(numero2) LIKE '%" . $query . "%' "
                  . "OR lower(observaciones) LIKE '%" . str_replace(' ', '%', $query) . "%'";
       }
-      $consulta .= " ORDER BY fecha DESC, codigo DESC";
+      
+      if ($order_by == 'cli')
+      {
+         $consulta .= " ORDER BY nombrecliente " . $order_type;
+      }
+      elseif ($order_by == 'total')
+      {
+         $consulta .= " ORDER BY total " . $order_type;
+      }
+      elseif ($order_by == 'fecha')
+      {
+         $consulta .= " ORDER BY fecha " . $order_type;
+      }
+      elseif ($order_by == 'finoferta')
+      {
+         $consulta .= " ORDER BY finoferta " . $order_type;
+      }
+      elseif ($order_by == 'hora')
+      {
+         $consulta .= " ORDER BY hora " . $order_type;
+      }
+      else
+      {
+         $consulta .= " ORDER BY fecha " . $order_type . ", codigo " . $order_type;
+      }
 
       $pedidos = $this->db->select_limit($consulta, FS_ITEM_LIMIT, $offset);
       if ($pedidos)
@@ -600,7 +690,7 @@ class pedido_cliente extends fs_model {
       return $pedilist;
    }
 
-   public function search_from_cliente($codcliente, $desde, $hasta, $serie, $obs = '')
+   public function search_from_cliente($codcliente, $desde, $hasta, $serie, $obs = '', $order_by = NULL, $order_type = 'DESC')
    {
       $pedilist = array();
       
@@ -611,7 +701,7 @@ class pedido_cliente extends fs_model {
       if ($obs != '')
          $sql .= " AND lower(observaciones) = " . $this->var2str(strtolower($obs));
 
-      $sql .= " ORDER BY fecha DESC, codigo DESC;";
+      $sql .= " ORDER BY fecha " . $order_type . ", codigo " . $order_type . ";";
 
       $pedidos = $this->db->select($sql);
       if ($pedidos)
